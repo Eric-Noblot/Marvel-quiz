@@ -31,8 +31,7 @@ const Login = () => {
         .then(user => {
             setEmail("")
             setPassword("")
-            navigate("/welcome", {replace: true}) //video 141 .13 3m55
-            console.log("dedans")
+            navigate("/welcome", {replace: true}) // de ce que jai compris {replace: true} permet de ne plus pouvoir revenir sur la page précédente, à creuser
         })
         .catch(error => {
             setError(error)
@@ -69,6 +68,10 @@ return (
                     </form>
                     <div className="linkContainer">
                         <Link className="simpleLink" to="/signup">Nouveau sur le site ? Inscris-toi ici</Link>
+                        <br />
+                        <br />  
+                        <Link className="simpleLink" to="/forgetpassword" >Mot de passe oublié ? Récupérez-ici</Link>
+
                     </div>
                 </div>
             </div>

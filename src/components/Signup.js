@@ -6,8 +6,9 @@
 
 import {useState} from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import {auth} from "./Firebase/firebaseConfig"
+import {auth, user} from "./Firebase/firebaseConfig"
 import {Link, useNavigate} from "react-router-dom"
+import { setDoc } from "firebase/firestore"
 
 const Signup = () => {
 
@@ -22,6 +23,7 @@ const Signup = () => {
 
     const [loginData, setLoginData] = useState(data)
     const [error, setError] = useState("")
+    const {pseudo, email, password, confirmPassword} = loginData
 
     const handleChange = (e) => {
         setLoginData({...loginData, [e.target.id] : e.target.value}) //ici on récupère le contenu de loginData, dans lequel on va modifier les objets selon la target. voir à la fin pour explications
@@ -31,6 +33,14 @@ const Signup = () => {
         e.preventDefault()
         //  V7(old) firebase.signupUser(loginData.email, loginData.password)
         createUserWithEmailAndPassword(auth, email, password) //on passe en premier paramètre l'authentification
+        
+        //création de l'utilisateur dans la base de données
+        .then( authUser => {
+            return setDoc(user(authUser.user.uid), {
+                pseudo: pseudo,
+                email: email
+            })
+        })
         .then(() => {
             setLoginData({...data}) //ci on récupére le contenu de loginData qu'on ECRASE et REMPLACE par data, qui est le state initial de notre état (chaine de caractere vide). Car pour la const signUp, nous ne voulons dans l'objet loginData que l'email et le password
             // props.history.push("/welcome")
@@ -43,7 +53,6 @@ const Signup = () => {
 
     }
 
-    const {pseudo, email, password, confirmPassword} = loginData
 
     const btn = pseudo === "" || email === "" || password === "" || password !== confirmPassword 
     ? <button disabled>Inscription</button> : <button>Inscription</button>

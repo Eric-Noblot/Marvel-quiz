@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
+import { getFirestore, doc } from "firebase/firestore"
 
 const firebaseConfig = {
     apiKey: "AIzaSyA6-hQAbiaQb3Azu1uMVPZVAUjZJlwlSXU",
@@ -12,6 +13,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 export const auth = getAuth(app)
+
+export const firestore = getFirestore() 
+export const user = (userId) => doc(firestore, `users/${userId}`) //doc necessite en premier argument la base de données (ici firestore)
 
 //on récupre du package firebase la methode getAuth et InitializeApp
 //On crée un variable app qui va initialiser notre base de données avec le schéma firebaseConfig

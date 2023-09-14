@@ -7,6 +7,7 @@ import Welcome from "./components/Welcome"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
 import ErrorPage from "./components/ErrorPage"
+import ForgetPassword from './components/ForgetPassword';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
       <Route path="/welcome" element={<Welcome />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+      <Route path="/forgetpassword" element = {<ForgetPassword />} />
       <Route path="*" element={<ErrorPage />} />
     </Routes>  
 
