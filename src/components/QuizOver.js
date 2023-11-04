@@ -1,4 +1,7 @@
 import React, {useEffect, useState} from "react"
+import { GiTrophyCup } from "react-icons/gi" //gi= git Icons 
+import Loader from "./Loader"
+import Modal from "./Modal/Modal"
 
 const QuizOver = React.forwardRef((props, ref) => {
     // console.log("props", props)
@@ -6,10 +9,18 @@ const QuizOver = React.forwardRef((props, ref) => {
 
     const {levelNames, score, maxQuestions, quizLevel, percent, loadLevelQuestions} = props  //destructuring pour récupérer les props du meme nom
     const [askedQuestions, setAskedQuestions] = useState([])
+    const [openModal, setOpenModal] = useState(false)
 
     useEffect(() => {
         setAskedQuestions(ref.current)
     },[ref])
+
+    const showModal = (id) => {
+        setOpenModal(true) 
+    }
+    const hideModal = () => {
+        setOpenModal(false) 
+    }
 
     if (score < maxQuestions / 2) { //si on veut forcer le joueur à revenir à la page d'accueil on peut loadLevelQuestions(0)
         setTimeout(() => {
@@ -24,7 +35,10 @@ const QuizOver = React.forwardRef((props, ref) => {
             quizLevel < levelNames.length ? //Est ce que le joueur au moins obtenu la moyenne et que le dernier niveau n'est pas atteint(quizLevel correspond à l'indice pour levelNames: ["debutant", "confirme", "expert"]
             (
                 <>
-                    <p className="successMsg">Bravo, passez au niveau suivant!</p>
+                    <p className="successMsg">
+                        < GiTrophyCup size= "50px" color = "gold"/> {/* on peut styliser les images importées de react en utilisant des props (documentation de react-icon , aller sur le github via le lien, descendre en bas de la page pour voir les "key" et les value possibles) */}
+                        Bravo, passez au niveau suivant!
+                    </p> 
                     <button onClick= {() => loadLevelQuestions(quizLevel)} className ="btnResult success">Niveau Suivant</button>  
                 </>
             ) :
@@ -50,7 +64,7 @@ const QuizOver = React.forwardRef((props, ref) => {
                     <td>{question.question}</td>
                     <td>{question.answer}</td>
                     <td>
-                        <button className="btnInfo">Infos</button>
+                        <button className="btnInfo" onClick={() => showModal(question.heroId)}>Infos</button> {/* pour afficher la modal on récupère le heroId dans le questionnaire, pour ca on crée une fonction qui appelle la fonction showModal afin de lui passer en paramètre le heroId qui va interagir avec l'API MARVEL*/}
                     </td>  
                 </tr>
             )
@@ -58,15 +72,11 @@ const QuizOver = React.forwardRef((props, ref) => {
     ) :
     (
         <tr>
-            <td colSpan="3">
-                <div className= "loader"></div>
-                <p style={{textAlign: "center", color: "red"}}>
-                    Pas de réponses ! 
-                </p>
+            <td colSpan="3"> {/* comme on a 3 colones normalement, on veut ce notre td remplisse tout le tableau */}
+                <Loader loadingMsg={"Pas de réponse"} styling={{textAlign: "center", color: "red"}}/>
             </td> 
         </tr>
     )
-    // comme on a 3 colones normalement, on veut ce notre td remplisse tout le tableau
 
     return (
         <>
@@ -96,6 +106,17 @@ const QuizOver = React.forwardRef((props, ref) => {
                     </tbody>
                 </table>
             </div>
+            <Modal showModal={openModal} hideModal={hideModal}> {/* On ouvre ici le component Modal pour passer des children en props*/}
+                <div className = "modalHeader">
+                    <h2>Titre</h2>
+                </div>
+                <div className="modalBody">
+                    <h3>Titre2</h3>
+                </div>
+                <div className="modalFooter">
+                    <button className="modalBtn">Fermer</button>
+                </div>
+            </ Modal >
         </>
     );
 });

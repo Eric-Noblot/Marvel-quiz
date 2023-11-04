@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Levels from './Levels';
 import ProgressBar from './ProgressBar';
 import {QuizMarvel} from "../questions/index"
-import QuizOver from "../components/QuizOver"
+import QuizOver from "./QuizOver"
+import { FaChevronRight } from 'react-icons/fa';
 
 class Quiz extends Component {
 
@@ -138,7 +139,7 @@ class Quiz extends Component {
                 className= {`answerOptions ${this.state.userAnswer === option ? " selected" : null }`} //pour faire en sorte que la reponse au clique reste en rouge et en uppercase, on vérifie que la réponse stockée correspond au clique option de l'utilsateur
                 onClick={() => this.submitAnswer(option)}
                 >
-                {option}</p>
+                < FaChevronRight /> {option}</p>
             )
         })
 
@@ -156,7 +157,7 @@ class Quiz extends Component {
         :
         (
             <>
-                <Levels />
+                <Levels levelNames={this.state.levelNames} quizLevel={this.state.quizLevel}/>
                 <ProgressBar idQuestion = {this.state.idQuestion} maxQuestions={this.state.maxQuestions}/>
                 <h2>{this.state.question}</h2>
     

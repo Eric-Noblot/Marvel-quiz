@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import App from './App';
 // (oldV7) import Firebase from "./components/Firebase"
 // (oldV7) import FirebaseContext from "./components/Firebase/context"

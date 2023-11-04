@@ -9,6 +9,7 @@ import { onAuthStateChanged } from 'firebase/auth'; //cette méthode fournie par
 import {auth, user} from "./Firebase/firebaseConfig"
 import {useNavigate} from "react-router-dom"
 import { getDoc } from "firebase/firestore"
+import Loader from "./Loader"
 
 const Welcome = () => {
 
@@ -41,10 +42,7 @@ const Welcome = () => {
 
 
     return userSession === null ? (
-        <>
-            <div className="loader"></div>
-            <p className ="loaderText">Loading...</p>
-        </>
+        <Loader loadingMsg={"Authentification..."} styling={{textAlign: "center", color: "white"}}/>
     ) : (
         <div className="quiz-bg">
             <div className="container">
